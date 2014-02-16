@@ -77,16 +77,17 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Minsk'
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
-
+DATE_FORMAT = 'd.m.Y'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]

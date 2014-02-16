@@ -1,0 +1,36 @@
+{% if status == 'today' %}
+    <span>Today</span>
+{% else %}
+    <a href="/tasks/today">Today</a>,
+{% endif %}
+<a href="/tasks/someday">Someday</a>,
+<a href="/tasks/fixed">Fixed</a>
+
+{% if latest_tasks_list %}
+    <form method="post" action="">
+        <table>
+            <tbody>
+                <tr>
+                    <th>Select</th>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>deadline_date</th>
+                    <th>Done or Not</th>
+                </tr>
+                {% for task in latest_tasks_list %}
+                    <tr>
+                        <td><input type="checkbox" value="{{ task.id }}" name="task_id[]"/></td>
+                        <td>{{ task.task_id }}</td>
+                        <td><a href="/tasks/{{ task.id }}/detail/">{{ task.task_title }}</a></td>
+                        <td>{{ task.deadline_date|date:"d.m.Y" }}</td>
+                        <td>{% if task.done %} Done {% endif %} </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}

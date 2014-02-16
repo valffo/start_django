@@ -21,6 +21,10 @@ python manage.py sql tasks
 
 python manage.py syncdb
 
+$ python manage.py runserver
+$ python manage.py runserver 0.0.0.0:8000
+
+valera 111111
 
 все это здесь
 http://djbook.ru/rel1.6/intro/tutorial01.html
