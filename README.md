@@ -29,3 +29,10 @@ valera 111111
 все это здесь
 http://djbook.ru/rel1.6/intro/tutorial01.html
 
+http://127.0.0.1:8000/tasks/
+http://127.0.0.1:8000/admin/
+
+установка регистрации
+   pip install django-registration
+
+http://habrahabr.ru/post/74165/
