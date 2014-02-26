@@ -3,7 +3,7 @@ from tasks import views
 
 urlpatterns = patterns('',
     # ex: /tasks/
-    url(r'^(?P<status>today/|someday/|fixed/|)$', views.index, name='index'),
+    url(r'^(?P<status>(today|someday|fixed))/$', views.index, name='index'),
     # ex: /tasks/5/
     url(r'^(?P<task_id>\d+)/detail/$', views.detail, name='detail'),
     # ex: /tasks/5/results/

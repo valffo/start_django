@@ -8,6 +8,7 @@ from django.shortcuts import render, get_object_or_404
 # Create your views here.
 
 def index(request, status):
+    print(status)
     if status == 'today':
         latest_tasks_list = Task.objects.filter(deadline_date = date.today()).order_by('-deadline_date')[:5]
     elif status == 'fixed':
