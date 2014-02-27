@@ -5,6 +5,9 @@ from tasks.models import Task
 from datetime import date
 from django.shortcuts import render, get_object_or_404
 
+from tasks.forms import ContactForm
+from django.views.generic.edit import FormView
+
 # Create your views here.
 STATUSES = ('today', 'someday', 'fixed')
 
@@ -32,6 +35,12 @@ def detail(request, task_id):
 def results(request, task_id):
     return HttpResponse("You're looking at the results of poll %s." % task_id)
 
-def add(request):
+def add(request, form):
+    form.send_email()
+    return super(ContactView, self).form_valid(form)
 
-    return HttpResponse("You're voting on poll %s." % task_id)
+def form_valid(self):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        form.send_email()
+        return super(ContactView, self).form_valid(form)
