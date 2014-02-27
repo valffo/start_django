@@ -3,40 +3,40 @@
 <h1>Авторизация</h1>
 
 {% if user.is_authenticated %}
-Что такое, {{ user.username }}? Вы же уже авторизорваны.
-Впрочем, всегда можно <a href="{% url 'auth_logout' %}">выйти</a>.<br/><br/>
+    Что такое, {{ user.username }}? Вы же уже авторизорваны.
+    Впрочем, всегда можно <a href="{% url 'auth_logout' %}">выйти</a>.<br/><br/>
 {% else %}
 
-{% if form.non_field_errors %}
-{{ form.non_field_errors }}
-{% endif %}
+    {% if form.non_field_errors %}
+        {{ form.non_field_errors }}
+    {% endif %}
 
 
-<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
+    <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>{{ form.username.label_tag }}</td>
+                <td>{{ form.username }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.password.label_tag }}</td>
+                <td>{{ form.password }}</td>
+            </tr>
+        </table>
 
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
+        <input type="submit" value="login"/>
+        <input type="hidden" name="next" value="{{ next }}"/>
+    </form>
 
-<script type="text/javascript">
-document.getElementById('id_username').focus()
-</script>
+    <script type="text/javascript">
+        document.getElementById('id_username').focus()
+    </script>
 
- <br/><br/>
-<ul>
-    <li><a href="{% url 'auth_password_reset' %}">Забыли пароль?</a></li>
-    <li><a href="{% url 'registration_register' %}">Регистрация</a></li>
-</ul>
+    <br/><br/>
+    <ul>
+        <li><a href="{% url 'auth_password_reset' %}">Забыли пароль?</a></li>
+        <li><a href="{% url 'registration_register' %}">Регистрация</a></li>
+    </ul>
 {% endif %}
 {% endblock %}
