@@ -1,10 +1,14 @@
-{% if status == 'today' %}
-    <span>Today</span>,
-{% else %}
-    <a href="{% url 'index' 'today' %}">Today</a>,
-{% endif %}
-<a href="{% url 'index' 'someday' %}">Someday</a>,
-<a href="{% url 'index' 'fixed' %}">Fixed</a>
+{% extends "base.html" %}
+{% block content %}
+
+
+{% for st in statuses %}
+    {% if status == st %}
+        <span>{{ st }}</span>,
+    {% else %}
+        <a href="{% url 'index' st %}">{{ st }}</a>,
+    {% endif %}
+{% endfor %}
 
 {% if latest_tasks_list %}
     <form method="post" action="">
@@ -52,3 +56,5 @@
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
+
+{% endblock %}

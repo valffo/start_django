@@ -6,8 +6,10 @@ from datetime import date
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
+STATUSES = ('today', 'someday', 'fixed')
 
 def index(request, status):
+
     print(status)
     if status == 'today':
         latest_tasks_list = Task.objects.filter(deadline_date = date.today()).order_by('-deadline_date')[:5]
@@ -20,7 +22,8 @@ def index(request, status):
     template = loader.get_template('tasks/index.html')
     context = RequestContext(request, {
         'latest_tasks_list': latest_tasks_list,
-        'status': status
+        'status': status,
+        'statuses': STATUSES
     })
     return HttpResponse(template.render(context))
 
