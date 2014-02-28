@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
-from tasks.models import Task
 from datetime import date
 from django.shortcuts import render, get_object_or_404
 
-from tasks.forms import ContactForm
+from tasks.models import Task
+from tasks.forms import TasksForm
 from django.views.generic.edit import FormView
 
 # Create your views here.
@@ -35,9 +35,20 @@ def detail(request, task_id):
 def results(request, task_id):
     return HttpResponse("You're looking at the results of poll %s." % task_id)
 
-def add(request, form):
-    form.send_email()
-    return super(ContactView, self).form_valid(form)
+def add(request):
+    if request.method == 'POST': # If the form has been submitted...
+        # ContactForm was defined in the the previous section
+        form = TasksForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            # ...
+            return HttpResponseRedirect('/thanks/') # Redirect after POST
+    else:
+        form = TasksForm() # An unbound form
+
+    return render(request, 'tasks/add.html', {
+        'form': form,
+    })
 
 def form_valid(self):
         # This method is called when valid form data has been POSTed.
