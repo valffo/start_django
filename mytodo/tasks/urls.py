@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     url(r'^(?P<task_id>\d+)/detail/$', views.detail, name='detail'),
     # ex: /tasks/5/results/
     url(r'^(?P<task_id>\d+)/results/$', views.results, name='results'),
-    # ex: /tasks/5/vote/
-    url(r'^(?P<task_id>\d+)/vote/$', views.vote, name='vote'),
+
+    url(r'^add_task_form/$', views.add_task_form, name='add_task_form'),
+    url(r'^do_action/$', views.do_action, name='do_action'),
 )

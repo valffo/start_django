@@ -7,7 +7,8 @@
 <a href="{% url 'index' 'fixed' %}">Fixed</a>
 
 {% if latest_tasks_list %}
-    <form method="post" action="">
+    <form method="POST" action="{% url 'do_action' %}">
+        {% csrf_token %}
         <style>
             .standart {
                 border-collapse: collapse;
@@ -46,8 +47,15 @@
                 {% endfor %}
             </tbody>
         </table>
+        <select name="act">
+            <option disabled selected>Выберите действие</option>
+            <option value="del">Удалить выбраные</option>
+            <option value="del">Отметить выбраные как выполненные</option>
+        </select>
         <input type="submit" value="Submit">
     </form>
+
+        <a href="{% url 'add_task_form' %}" >Add new task</a>
 
 {% else %}
     <p>No polls are available.</p>

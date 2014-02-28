@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from tasks.models import Task
 from datetime import date
-from django.shortcuts import render, get_object_or_404
+from django.forms.models import modelformset_factory
+from django.shortcuts import render, get_object_or_404, render_to_response
 
 # Create your views here.
 
@@ -30,6 +31,22 @@ def detail(request, task_id):
 
 def results(request, task_id):
     return HttpResponse("You're looking at the results of poll %s." % task_id)
-
-def vote(request, task_id):
-    return HttpResponse("You're voting on poll %s." % task_id)
+def do_action(request):
+    pass
+def add_task_form(request, task_id=0, user_name = None):
+    if (task_id):
+        taskObj = Task.objects.get(pk=task_id)
+    TaskFormSet = modelformset_factory(Task)
+    if request.method == "POST":
+        formset = TaskFormSet(request.POST)
+        if formset.is_valid():
+            formset.save()
+            # Do something. Should generally end with a redirect. For example:
+            return HttpResponseRedirect('/tasks')
+    else:
+        #user = User.objects.get(name=user_name)
+        #formset = TaskFormSet(instance=user)
+        formset = TaskFormSet()
+    return render_to_response("tasks/new.html", {
+        "formset": formset,
+    })
