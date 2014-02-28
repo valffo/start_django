@@ -40,8 +40,11 @@
         <input type="submit" value="Submit">
     </form>
 
+
+
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
-
+ <a href="{% url 'add_task_form' %}" >Add new task</a>
+ <a href="{% url 'add' %}" >Add</a>
 {% endblock %}

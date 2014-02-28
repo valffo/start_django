@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from datetime import date
@@ -13,6 +12,7 @@ from django.views.generic.edit import FormView
 
 def index(request, status):
 
+    STATUSES = ['today', 'someday', 'fixed']
     if status == 'today':
         latest_tasks_list = Task.objects.filter(deadline_date=date.today(), user=request.user.id).order_by('-deadline_date')[:5]
     elif status == 'fixed':
@@ -51,7 +51,28 @@ def add(request):
     })
 
 def form_valid(self):
-        # This method is called when valid form data has been POSTed.
-        # It should return an HttpResponse.
-        form.send_email()
-        return super(ContactView, self).form_valid(form)
+    # This method is called when valid form data has been POSTed.
+    # It should return an HttpResponse.
+    form.send_email()
+    return super(ContactView, self).form_valid(form)
+
+def do_action(request):
+    pass
+
+def add_task_form(request, task_id=0, user_name = None):
+    if (task_id):
+        taskObj = Task.objects.get(pk=task_id)
+    TaskFormSet = modelformset_factory(Task)
+    if request.method == "POST":
+        formset = TaskFormSet(request.POST)
+        if formset.is_valid():
+            formset.save()
+            # Do something. Should generally end with a redirect. For example:
+            return HttpResponseRedirect('/tasks')
+    else:
+        #user = User.objects.get(name=user_name)
+        #formset = TaskFormSet(instance=user)
+        formset = TaskFormSet()
+    return render_to_response("tasks/new.html", {
+        "formset": formset,
+    })
