@@ -11,4 +11,6 @@ urlpatterns = patterns('',
 
     url(r'^add_task_form/$', views.add_task_form, name='add_task_form'),
     url(r'^do_action/$', views.do_action, name='do_action'),
+    # ex: /tasks/5/vote/
+    url(r'^add/$', views.add, name='add'),
 )
