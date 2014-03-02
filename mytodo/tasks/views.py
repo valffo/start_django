@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import RequestContext, loader
 from datetime import date
@@ -15,30 +16,46 @@ from django.utils.decorators import method_decorator
 
 # Create your views here.
 
-@login_required
-def index(request, status):
+STATUSES = {
+    'today': u'Задачи на сегодня',
+    'someday': u'Все задачи' ,
+    'fixed': u'Выпоненые задачи'
+    }
+ACTION_DELETE = {'delete': u"Удалить выбраные", }
+ACTION_SET_FIXED = {'set_fixed': u'Отметить выбраные как выполненные', }
+ACTION_SET_NOT_FIXED = {'set_not_fixed': u'Отметить выбраные как не выполненные', }
 
-    STATUSES = ['today', 'someday', 'fixed']
+@login_required
+def index(request, status, message=''):
+    actions = {}
     if status == 'today':
         latest_tasks_list = Task.objects.filter(deadline_date=date.today(), user=request.user.id).order_by('-deadline_date')[:5]
+        actions.update(ACTION_DELETE)
+        actions.update(ACTION_SET_FIXED)
+        actions.update(ACTION_SET_NOT_FIXED)
     elif status == 'fixed':
         latest_tasks_list = Task.objects.filter(done=1, user=request.user.id).order_by('-deadline_date')[:5]
+        actions = ACTION_DELETE
     else:
         latest_tasks_list = Task.objects.filter(user=request.user.id).order_by('-deadline_date')[:5]
+        actions.update(ACTION_DELETE)
+        actions.update(ACTION_SET_FIXED)
+        actions.update(ACTION_SET_NOT_FIXED)
     template = loader.get_template('tasks/index.html')
     context = RequestContext(request, {
         'latest_tasks_list': latest_tasks_list,
         'status': status,
+        'actions': actions,
         'statuses': STATUSES,
-        'userg': str(request.user.id) + '   ' + request.user.username
+        'userg': str(request.user.id) + '   ' + request.user.username,
+        'message': message
     })
     return HttpResponse(template.render(context))
 
 @login_required
 def add(request):
-    if request.method == 'POST': # If the form has been submitted...
-        # ContactForm was defined in the the previous section
-        form = TasksForm(request.POST) # A form bound to the POST data
+    if request.method == 'POST':
+        form = TasksForm(request.POST)
         if form.is_valid():
             task = Task(
                 deadline_date=request.POST['deadline_date'],
@@ -48,12 +65,21 @@ def add(request):
             task.save()
             return HttpResponseRedirect(reverse('detail', kwargs={'pk': task.id, }))
     else:
-        form = TasksForm() # An unbound form
+        form = TasksForm()
 
     return render(request, 'tasks/add.html', {'form': form, })
 
 def do_action(request):
-    pass
+    task_id = request.POST.getlist('task_id[]')
+    action = request.POST['act']
+    status = request.POST['status']
+    if (ACTION_DELETE.has_key(action)):
+        tasks = Task.objects.filter(id__in=task_id, ).delete()
+    elif (ACTION_SET_FIXED.has_key(action)):
+        tasks = Task.objects.filter(id__in=task_id).update(done=True)
+    elif (ACTION_SET_NOT_FIXED.has_key(action)):
+        tasks = Task.objects.filter(id__in=task_id).update(done=False)
+    return HttpResponseRedirect(reverse('tasks_index', kwargs={'status': status, }))
 
 class DetailView(generic.DetailView):
     model = Task

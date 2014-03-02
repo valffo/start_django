@@ -2,26 +2,26 @@
 {% block content %}
 
 <ul>
-    {% for st in statuses %}
+    {% for st,title in statuses.items %}
         <li>
             {% if status == st %}
-            <span>{{ st }}</span>,
+            <span>{{ title }}</span>,
             {% else %}
-                <a href="{% url 'tasks_index' st %}">{{ st }}</a>,
+                <a href="{% url 'tasks_index' st %}">{{ title }}</a>,
             {%endif %}
         </li>
     {% endfor %}
 </ul>
 {% if latest_tasks_list %}
-    <form method="post" action="">
+    <form method="POST" action="{% url 'do_action' %}" >
         <table class="standart">
             <tbody>
                 <tr>
-                    <th>Select</th>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Deadline date</th>
-                    <th>Done or Not</th>
+                    <th>Выбрать</th>
+                    <th>№</th>
+                    <th>Задача</th>
+                    <th>Крайняя дата выполнения</th>
+                    <th>Статус</th>
                 </tr>
                 {% for task in latest_tasks_list %}
                     <tr>
@@ -29,7 +29,7 @@
                         <td>{{ task.id }}</td>
                         <td><a href="{% url 'detail' task.id %}">{{ task.task_title }}</a></td>
                         <td>{{ task.deadline_date|date:"d.m.Y" }}</td>
-                        <td>{% if task.done %} Done {% endif %} </td>
+                        <td>{% if task.done %} Выполнена {% endif %} </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -37,12 +37,15 @@
         <br/>
         <br/>
         <br/>
+        <input type="hidden" name="status" value="{{ status }}" />
+        {% csrf_token %}
         <select name="act">
             <option disabled selected>Выберите действие</option>
-            <option value="del">Удалить выбраные</option>
-            <option value="del">Отметить выбраные как выполненные</option>
+            {% for action, title in actions.items %}
+                <option value="{{ action }}">{{ title }}</option>
+            {% endfor %}
         </select>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Выполнить действие">
     </form>
 
 
