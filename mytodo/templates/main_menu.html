@@ -1,9 +1,10 @@
 <div>
     <ul class="hr">
         <li><a href="{% url 'home' %}">Home</a></li>
-        <li><a href="{% url 'index' 'someday' %}">Tasks</a></li>
+        <li><a href="{% url 'tasks_index' 'someday' %}">Tasks</a></li>
         <li><a href="{% url 'auth_login' %}">Login</a></li>
-        <li><a href="{% url 'auth_logout' %}">Logout</a></li>
+        <li><a href="{% url 'auth_logout' %}" onclick="return confirm('Are you sure?')">Logout</a></li>
         <li><a href="{% url 'registration_register' %}">Registration</a></li>
+        <li><a href="{% url 'add' %}" >Add new task</a></li>
     </ul>
 </div>

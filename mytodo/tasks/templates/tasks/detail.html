@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-
-{{ task }}
+<h1>Title #ID {{ task.id }}</h1>
+<ul>
+    <li><b>Title:</b> {{ task.task_title }}</li>
+    <li><b>Dead Line:</b> {{ task.deadline_date }}</li>
+    <li><b>Status:</b> {{ task.done }}</li>
+</ul>
 
 {% endblock %}

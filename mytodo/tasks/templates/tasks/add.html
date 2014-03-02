@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<form action="/contact/" method="post">{% csrf_token %}
+<form action="{% url 'create' %}" method="post">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Submit" />
 </form>

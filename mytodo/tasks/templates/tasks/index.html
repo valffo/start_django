@@ -1,15 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
 
-
-{% for st in statuses %}
-    {% if status == st %}
-        <span>{{ st }}</span>,
-    {% else %}
-        <a href="{% url 'index' st %}">{{ st }}</a>,
-    {% endif %}
-{% endfor %}
-
+<ul>
+    {% for st in statuses %}
+        <li>
+            {% if status == st %}
+            <span>{{ st }}</span>,
+            {% else %}
+                <a href="{% url 'tasks_index' st %}">{{ st }}</a>,
+            {%endif %}
+        </li>
+    {% endfor %}
+</ul>
 {% if latest_tasks_list %}
     <form method="post" action="">
         <table class="standart">
@@ -32,6 +34,9 @@
                 {% endfor %}
             </tbody>
         </table>
+        <br/>
+        <br/>
+        <br/>
         <select name="act">
             <option disabled selected>Выберите действие</option>
             <option value="del">Удалить выбраные</option>
@@ -45,6 +50,5 @@
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
- <a href="{% url 'add_task_form' %}" >Add new task</a>
- <a href="{% url 'add' %}" >Add</a>
+
 {% endblock %}
