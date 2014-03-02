@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from datetime import date
-from django.forms.models import modelformset_factory
-from django.shortcuts import render, get_object_or_404, render_to_response
+
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from models import Task
 from forms import TasksForm
 from django.views import generic
 from django.core.urlresolvers import reverse
 
-from django.conf.urls import patterns, url
-from django.views.generic.edit import FormView
-from django.utils.decorators import method_decorator
 
 # Create your views here.
 

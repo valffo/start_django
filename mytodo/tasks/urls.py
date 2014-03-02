@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 from tasks import views
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('',
     # ex: /tasks/
